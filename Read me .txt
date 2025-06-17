@@ -1,0 +1,2 @@
+I used a free course and ai to help learn how to use a LLM , by using hugging face i used qwen 2.5 and used Ai to create examples to help me make Anya , im planning on making many upgrades and a fully humanoid robot body for anya.
+This was mostly for my own education however the code will be put on here with regualar updates. The code within this file will be the V1 of anya and new folders will be made for updates
