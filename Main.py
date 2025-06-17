@@ -4,7 +4,7 @@ import asyncio
 import threading
 from server.upload_server import create_upload_app
 from server.websocket_server import run_ai_server
-
+#1106
 def run_flask():
     app = create_upload_app() #locally hosted server 4 anya
     app.run(host="0.0.0.0", port=5000)
