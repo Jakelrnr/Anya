@@ -1,0 +1,97 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Talk to AI</title>
+  <style>
+    body { font-family: Arial; margin: 2em; }
+    .msg { margin-bottom: 10px; }
+    .ai { color: darkblue; }
+    .user { color: green; }
+  </style>
+</head>
+<body>
+  <h2>Talk to the AI</h2>
+  <div id="chat"></div>
+  <input type="text" id="messageInput" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+  <button onclick="startRecording()">🎤 Voice Input</button>
+
+  <script>
+    const ws = new WebSocket("ws://localhost:8765");
+    let mediaRecorder, audioChunks = [];
+
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      const chat = document.getElementById("chat");
+
+      console.log("🔁 WS Message received:", msg); // Debug
+
+      if (msg.type === "ai_response" || msg.type === "ai_response_audio") {
+        chat.innerHTML += `<div class="msg ai"><strong>AI:</strong> ${msg.content}</div>`;
+
+        // === DEBUGGING AUDIO HANDLING ===
+        if (msg.audio_path) {
+          const audioUrl = `http://localhost:5000/${msg.audio_path.replaceAll('\\', '/')}`;
+          console.log("🔊 Audio URL:", audioUrl);
+
+          const audio = new Audio(audioUrl);
+
+          audio.oncanplaythrough = () => {
+            console.log("✅ Audio ready to play");
+            audio.play().then(() => {
+              console.log("▶️ Audio playback started");
+            }).catch((err) => {
+              console.error("❌ Audio playback error:", err);
+              const btn = document.createElement("button");
+              btn.textContent = "🔊 Play Audio";
+              btn.onclick = () => audio.play();
+              chat.appendChild(btn);
+            });
+          };
+
+          audio.onerror = (e) => {
+            console.error("🚫 Failed to load audio file", e);
+          };
+        }
+      } else if (msg.type === "welcome") {
+        chat.innerHTML += `<div class="msg ai"><em>${msg.content}</em></div>`;
+      }
+    };
+
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const message = input.value;
+      if (!message) return;
+      ws.send(JSON.stringify({ type: "user_message", content: message }));
+      document.getElementById("chat").innerHTML += `<div class="msg user"><strong>You:</strong> ${message}</div>`;
+      input.value = "";
+    }
+
+    async function startRecording() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append('audio', audioBlob, 'voice_input.webm');
+
+        const res = await fetch('http://localhost:5000/upload_audio', {
+          method: 'POST',
+          body: formData
+        });
+
+        const { filepath } = await res.json();
+        ws.send(JSON.stringify({ type: 'audio_input', filename: filepath }));
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => mediaRecorder.stop(), 4000);
+    }
+  </script>
+</body>
+</html>
