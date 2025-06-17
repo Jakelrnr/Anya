@@ -1,4 +1,5 @@
 import whisper
+#6197
 
 model = whisper.load_model("base")
 
