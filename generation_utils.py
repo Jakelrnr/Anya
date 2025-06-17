@@ -2,7 +2,7 @@ def generate_response(model, message, personality_settings=None):
     """
     Generate AI response with detailed parameter explanations
     """
-    
+  #2609  
     # Default personality settings
     if personality_settings is None:
         personality_settings = {
