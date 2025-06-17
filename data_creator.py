@@ -8,7 +8,7 @@ class PersonalityDataCreator :
     def __init__(self, charecater_name = "Anya"):
         self.character_name = charecater_name
         self.training_examples = []
-    
+ #0108   
 
     def add_conversation_example(self,user_input: str, ai_response: str , context = ""):
         example = {
