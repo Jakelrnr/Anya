@@ -4,7 +4,7 @@ import torch
 import os
 #2212
 class ModelManager:
-    def __init__(self, base_model_name="openlm-research/open_llama_7b", lora_path="./openllama_lora"):
+    def __init__(self, base_model_name="     def download_model(self, model_name="bartowski/Qwen2.5-14B-Instruct-GGUF", lora_path="./openllama_lora"):
         self.base_model_name = base_model_name
         self.lora_path = lora_path
         self.tokenizer = None
