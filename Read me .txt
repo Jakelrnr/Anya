@@ -4,3 +4,6 @@ This was mostly for my own education however the code will be put on here with r
 
 
 Co pilot was used for Debugging due to certain compatability issues with certain modules and models ! 
+
+
+As i say this project was for my education as I was curious on how ai chat bots work, this was a better way for me to learn as I was able to ask ai platforms on how each part works and how I can improve it, soon I plan on building a robot which anya can control via ROS 
