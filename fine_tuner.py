@@ -11,7 +11,7 @@ class ModelManager:
         self.model = None
 
     def load_model(self):
-        print(f"🔄 Loading tokenizer from {self.lora_path if os.path.exists(self.lora_path) else self.base_model_name}...")
+        print(f"Loading tokenizer from {self.lora_path if os.path.exists(self.lora_path) else self.base_model_name}...")
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.lora_path if os.path.exists(self.lora_path) else self.base_model_name
@@ -21,7 +21,7 @@ class ModelManager:
             self.tokenizer.pad_token = self.tokenizer.eos_token
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 
-        print(f"🔄 Loading base model from {self.base_model_name}...")
+        print(f" Loading base model from {self.base_model_name}...")
         base_model = AutoModelForCausalLM.from_pretrained(
             self.base_model_name,
             torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
@@ -29,14 +29,14 @@ class ModelManager:
             trust_remote_code=True,
         )
 
-        print(f"🔄 Loading LoRA weights from {self.lora_path}...")
+        print(f"Loading LoRA weights from {self.lora_path}...")
         self.model = PeftModel.from_pretrained(base_model, self.lora_path)
         self.model.eval()
-        print("✅ Model with LoRA weights loaded successfully.")
+        print(" Model with LoRA weights loaded successfully.")
 
     def test_model(self, instruction="Who created you?"):
         if self.model is None or self.tokenizer is None:
-            raise RuntimeError("⚠️ Model is not loaded. Call load_model() first.")
+            raise RuntimeError(" Model is not loaded. Call load_model() first.")
 
         # Prompt format for OpenLLaMA (no special chat tags)
         prompt = f"### Instruction:\n{instruction}\n\n### Response:\n"
