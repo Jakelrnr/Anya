@@ -4,7 +4,7 @@ from transformers import AutoTokenizer  # For HF tokenizer
 import os
 #2104
 class ModelManager:
-    _instance = None  # Singleton instance
+    _instance = None  
 
     def __new__(cls):
         if cls._instance is None:
