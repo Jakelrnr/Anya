@@ -61,4 +61,4 @@ if __name__ == "__main__":
     manager = ModelManager()
     manager.load_model()
     output = manager.test_model("Tell me about your creator.")
-    print(f"🧠 Model says:\n{output}")
+    print(f"Model says:\n{output}")
