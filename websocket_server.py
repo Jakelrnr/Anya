@@ -196,7 +196,7 @@ async def run_ai_server():
         if not os.path.exists(model_path):
             model_path = manager.download_model()
 
-        # ✅ FIX: only one object is returned
+        # FIX: only one object is returned
         model = manager.load_model(model_path)
 
         ai_personality = AIPersonality(model,tokenizer=manager.tokenizer)
