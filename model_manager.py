@@ -97,7 +97,7 @@ class ModelManager:
 if __name__ == "__main__":
     manager = ModelManager()
     path = manager.download_model()
-    # Set load_tokenizer=True only if you want a tokenizer (e.g., for HF models)
+    
     model = manager.load_model(path, load_tokenizer=False)
     test_response = manager.test_model()
     print(f"Test response: {test_response}")
