@@ -59,7 +59,7 @@ class ModelManager:
  #old code from old model inused           n_ctx=4096,
             n_batch=512,
             n_threads=8,
-            n_gpu_layers=0,
+            n_gpu_layers=8090, 
             use_mmap=True,
             use_mlock=False,
             verbose=False,
